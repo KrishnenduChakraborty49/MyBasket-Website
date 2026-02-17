@@ -5,11 +5,17 @@ It provides secure authentication, role-based authorization, and RESTful APIs to
 ---
 
 ### 📌 Project Overview
+
 MyBasket simulates a real-world online shopping system where users can:
+
 (i) Register and log in securely
+
 (ii) Browse products
+
 (iii) Add items to a cart
+
 (iv) Place orders
+
 The backend follows layered architecture, DTO pattern, and industry best practices.
 
 ---
