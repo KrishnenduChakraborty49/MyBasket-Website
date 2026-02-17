@@ -39,6 +39,7 @@ The backend follows layered architecture, DTO pattern, and industry best practic
 Controller → Service → Repository → Database
             ↓
            DTO
+
 **Controller Layer:**- Handles HTTP requests
 
 **Service Layer:** – Business logic
@@ -71,45 +72,67 @@ Authorization: Bearer <JWT_TOKEN>
 ### 🔗 REST API Endpoints
 
 ## 🔑 Authentication APIs
-# Method	Endpoint	           Description
- POST	    /api/auth/register	 Register a new user
- POST	    /api/auth/login	     Login and generate JWT token
+
+ # Method         Endpoint	           Description
+
+ POST            /api/auth/register	           Register a new user
+ 
+ POST	    /api/auth/login	           Login and generate JWT token
 
 ## 📦 Product APIs
+
  # Method           Endpoint              Description 
-  GET	              /api/products	        Get all products
-  GET	              /api/products/{id}	  Get product by ID
-  POST	            /api/products	        Add product (ADMIN only)
-  PUT	              /api/products/{id}	  Update product (ADMIN only)
-  DELETE	          /api/products/{id}	  Delete product (ADMIN only
+ 
+  GET	        /api/products	        Get all products
+  
+  GET	        /api/products/{id}      Get product by ID
+  
+  POST	        /api/products	        Add product (ADMIN only)
+  
+  PUT	        /api/products/{id}      Update product (ADMIN only)
+  
+  DELETE	        /api/products/{id}      Delete product (ADMIN only
 
  ## 🛒 Cart APIs
+ 
 # Method	      Endpoint	                      Description
+
   POST	        /api/cart/add	                  Add product to cart
+  
   GET	          /api/cart	                      View cart
+  
   DELETE	      /api/cart/remove/{productId}	  Remove product from cart
 
 ---
 
 ### 🧪 API Testing with Postman
+
 All REST APIs were tested using **Postman**.
 
 ## Authentication Flow
 
 1.Register → /api/auth/register
+
 2.Login → /api/auth/login
+
 3.Copy JWT token
+
 4.Add token to Authorization header
+
 5.Access secured APIs
 
 ---
 
 ### 📌 Future Enhancements
+
 1.Payment gateway integration
+
 2.Swagger API documentation
+
 3.Frontend integration
 
 ### 👨‍💻 Author
 
 Krishnendu Chakraborty
+
 Aspiring Java Backend Developer (Java | Spring Boot | REST APIs | JWT | MySQL)
