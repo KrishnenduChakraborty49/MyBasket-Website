@@ -36,8 +36,10 @@ The backend follows layered architecture, DTO pattern, and industry best practic
 - **Security:** Spring Security (JWT Authentication)  
 - **ORM:** JPA / Hibernate  
 - **Database:** MySQL  
+- **Database Tools:** MySQL Workbench, HeidiSQL  
 - **Build Tool:** Maven  
 - **IDE:** IntelliJ IDEA  
+- **API Testing:** Postman
 
 ---
 
