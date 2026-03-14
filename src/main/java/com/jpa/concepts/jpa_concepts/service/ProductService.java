@@ -15,4 +15,5 @@ public interface ProductService {
     PageResponse<Product> getAll(int page, int size, String sortBy, String sortDir);
     Product get(Long productId);
     void delete(Long productId);
+    List<ProductDto> getProductsByCategoryId(Long categoryId);
 }

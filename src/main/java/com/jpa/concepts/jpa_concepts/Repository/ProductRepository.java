@@ -3,6 +3,7 @@ package com.jpa.concepts.jpa_concepts.Repository;
 import com.jpa.concepts.jpa_concepts.Entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,7 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
     @Query(" Select p from Product p")
     List<Product> getAllProduct();
 
-
+    @Query("SELECT p FROM Product p JOIN p.categories c WHERE c.id = :categoryId")
+    List<Product> getProductsByCategoryId(@Param("categoryId") Long categoryId);
 
 }

@@ -109,6 +109,12 @@ public class ProductController {
 
         return ResponseEntity.ok(fileMetaData);
     }
+    @GetMapping("category/{categoryId}")
+    public ResponseEntity<List<ProductDto>> getProductsOfCategory(
+            @PathVariable Long categoryId
+    ){
+        return new ResponseEntity<>(productServices.getProductsByCategoryId(categoryId),HttpStatus.OK);
+    }
 
 //    @GetMapping("/{productId}/image")
 //    public ResponseEntity<Resource> serveFile(
@@ -126,4 +132,5 @@ public class ProductController {
 //                )
 //                .body(resource);
 //    }
+
 }

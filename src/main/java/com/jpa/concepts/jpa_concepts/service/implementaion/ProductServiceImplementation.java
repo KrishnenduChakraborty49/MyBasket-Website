@@ -2,7 +2,10 @@ package com.jpa.concepts.jpa_concepts.service.implementaion;
 
 import com.jpa.concepts.jpa_concepts.DTO.PageResponse;
 import com.jpa.concepts.jpa_concepts.DTO.ProductDto;
+import com.jpa.concepts.jpa_concepts.Entity.Category;
 import com.jpa.concepts.jpa_concepts.Entity.Product;
+import com.jpa.concepts.jpa_concepts.Exception.ResourceNotFoundException;
+import com.jpa.concepts.jpa_concepts.Repository.CategoryRepository;
 import com.jpa.concepts.jpa_concepts.Repository.ProductRepository;
 import com.jpa.concepts.jpa_concepts.service.ProductService;
 
@@ -17,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.awt.print.Pageable;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.domain.PageRequest.of;
 
@@ -28,12 +33,26 @@ public class ProductServiceImplementation implements ProductService {
 
     private final ModelMapper modelMapper;
 
+    private final CategoryRepository categoryRepository;
 
     @Override
     public ProductDto createProduct(ProductDto productdto) {
-        var product=modelMapper.map(productdto,Product.class);
-        var savedproduct=productRepository.save(product);
-        return modelMapper.map(savedproduct,ProductDto.class);
+
+        Product product = modelMapper.map(productdto, Product.class);
+
+        Long cid = productdto.getCategoryId();
+
+        if (cid != null) {
+
+            Category category = categoryRepository.findById(cid)
+                    .orElseThrow(() -> new ResourceNotFoundException("Category not found with id " + cid));
+
+            product.getCategories().add(category);
+        }
+
+        Product savedProduct = productRepository.save(product);
+
+        return modelMapper.map(savedProduct, ProductDto.class);
     }
 
     @Override
@@ -66,6 +85,14 @@ public class ProductServiceImplementation implements ProductService {
     public void delete(Long productId) {
         var product=productRepository.findById(Math.toIntExact(productId)).orElseThrow(()->new RuntimeException("product is not found"));
         productRepository.delete(product);
+    }
+
+    @Override
+    public List<ProductDto> getProductsByCategoryId(Long categoryId) {
+
+        List<Product> products=productRepository.getProductsByCategoryId(categoryId);
+
+        return products.stream().map(item->modelMapper.map(item, ProductDto.class)).collect(Collectors.toList());
     }
 
 

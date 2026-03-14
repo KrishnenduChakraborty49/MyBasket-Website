@@ -1,5 +1,6 @@
 package com.jpa.concepts.jpa_concepts.controller;
 
+import com.jpa.concepts.jpa_concepts.DTO.ErrorResponse;
 import com.jpa.concepts.jpa_concepts.DTO.LoginRequest;
 import com.jpa.concepts.jpa_concepts.DTO.TokenResponse;
 import com.jpa.concepts.jpa_concepts.DTO.UserDto;
@@ -9,8 +10,11 @@ import com.jpa.concepts.jpa_concepts.Repository.UserRepository;
 import com.jpa.concepts.jpa_concepts.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,10 +23,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import org.slf4j.Logger;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -32,6 +37,9 @@ public class AuthController {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final JwtService jwtService;
+
+    private Logger logger= LoggerFactory.getLogger(AuthController.class);
+
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> generateToken(
             @RequestBody LoginRequest loginRequest
@@ -58,5 +66,21 @@ public class AuthController {
         }catch(AuthenticationException e){
             throw new BadCredentialsException("Invalid email or password");
         }
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<?> profile(
+            Principal principal
+    ){
+        if(principal==null){
+            return new ResponseEntity<>(
+                    new ErrorResponse("user not logged in", HttpStatus.NOT_FOUND, 4074),
+                    HttpStatus.NOT_FOUND
+            );
+        }
+        logger.info("Logged in user {}", principal.getName());
+        User user=userRepository.findByEmail(principal.getName()).get();
+
+        return new ResponseEntity<>(modelMapper.map(user,UserDto.class),HttpStatus.OK);
     }
 }
