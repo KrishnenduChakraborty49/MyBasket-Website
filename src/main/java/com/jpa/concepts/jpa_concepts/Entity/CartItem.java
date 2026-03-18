@@ -1,9 +1,15 @@
 package com.jpa.concepts.jpa_concepts.Entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name="my-basket-cart-item")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
